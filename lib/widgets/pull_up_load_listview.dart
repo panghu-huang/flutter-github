@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class PullUpLoadListView extends StatefulWidget {
 
-  bool hasMore = true;
-  bool loading;
-  int itemCount;
+  final bool hasMore;
+  final bool loading;
+  final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
   final Function loadMore;
 
   PullUpLoadListView({
-    this.hasMore,
+    this.hasMore = true,
     this.itemBuilder,
     this.itemCount,
     this.loading,

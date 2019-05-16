@@ -11,21 +11,14 @@ class RepositoryPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _RepositoryPageState(
-      user: this.user,
-      name: this.name,
-    );
+    return _RepositoryPageState();
   }
 
 }
 
 class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
 
-  final String user;
-  final String name;
-
   TabController _controller;
-  _RepositoryPageState({ this.user, this.name });
 
   @override
   void initState() {
@@ -41,7 +34,7 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
   Widget build(BuildContext ctx) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$user/$name'),
+        title: Text('${widget.user}/${widget.name}'),
         elevation: 0,
       ),
       body: Column(
@@ -62,10 +55,10 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
               controller: _controller,
               children: <Widget>[
                 RepositoryCodePage(
-                  user: user,
-                  name: name,
+                  user: widget.user,
+                  name: widget.name,
                 ),
-                RepositoryIssues('$user/$name')
+                RepositoryIssues('${widget.user}/${widget.name}')
               ],
             ),
           )

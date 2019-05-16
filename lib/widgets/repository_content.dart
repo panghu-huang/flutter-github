@@ -12,22 +12,17 @@ class RepositoryContentWidget extends StatefulWidget {
   RepositoryContentWidget(this.fullName);
   @override
   State<StatefulWidget> createState() {
-    return _RepositoryContentWidgetState(
-      this.fullName
-    );
+    return _RepositoryContentWidgetState();
   }
 }
 
 class _RepositoryContentWidgetState extends State<RepositoryContentWidget> {
 
-  final String fullName;
   String _path;
   List<RepositoryContent> _contents = [];
   RepositoryContent _content;
   bool _loading = false;
   bool _isDirectory = true;
-
-  _RepositoryContentWidgetState(this.fullName);
 
   @override
   void initState() {
@@ -139,7 +134,7 @@ class _RepositoryContentWidgetState extends State<RepositoryContentWidget> {
   }
 
   Widget _buildFilePath() {
-    String path = fullName + (_path == null ? '' : '/$_path');
+    String path = widget.fullName + (_path == null ? '' : '/$_path');
     List<String> directories = path.split('/');
     List<Widget> widgets = [];
     int length = directories.length;
@@ -194,7 +189,7 @@ class _RepositoryContentWidgetState extends State<RepositoryContentWidget> {
   void _fetchRepositoryContents() async {
     setState(() => _loading = true);
     ApiService service = ApiService(
-      routeName: 'repos/$fullName/contents'
+      routeName: 'repos/${widget.fullName}/contents'
     );
     var result = await service.get(
       path: _path,

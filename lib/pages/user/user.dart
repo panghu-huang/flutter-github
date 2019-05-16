@@ -9,16 +9,13 @@ class UserPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _UserPageState(this.name);
+    return _UserPageState();
   }
 }
 
 class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
 
-  final String name;
   TabController _controller;
-
-  _UserPageState(this.name);
 
   @override
   void initState() {
@@ -34,7 +31,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(name),
+        title: Text(widget.name),
       ),
       body: Column(
         children: <Widget>[
@@ -53,7 +50,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _controller,
               children: <Widget>[
-                UserRepositories(name),
+                UserRepositories(widget.name),
                 Tab(text: 'Followers'),
               ],
             ),
