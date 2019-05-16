@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:github/widgets/pull_up_load_listview.dart';
 import 'package:github/widgets/repository_item.dart';
 import 'package:github/models/repository.dart';
 import 'package:github/models/search_repos.dart';
 import 'package:github/services/api_service.dart';
+import 'package:github/config/config.dart' as config;
 
 class Popular extends StatefulWidget {
 
@@ -17,7 +19,7 @@ class _PopularState extends State<Popular> with AutomaticKeepAliveClientMixin {
 
   ScrollController _controller;
   List<Repository> _repositories = [];
-  int _page = 1;
+  int _page = 0;
   bool _loading = false;
 
   @override
@@ -31,16 +33,13 @@ class _PopularState extends State<Popular> with AutomaticKeepAliveClientMixin {
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    int length = _repositories.length;
-    return ListView.builder(
-      itemCount: length + 1,
+    return PullUpLoadListView(
+      loading: _loading,
+      itemCount: _repositories.length,
       itemBuilder: (BuildContext ctx, int index) {
-        if (index == length) {
-          return _loading ? _buildLoading() : null;
-        }
         return RepositoryItem(_repositories[index]);
       },
-      controller: _controller,
+      loadMore: _fetchRepositories,
     );
   }
 
@@ -81,8 +80,8 @@ class _PopularState extends State<Popular> with AutomaticKeepAliveClientMixin {
       params: {
         'q': 'JavaScript',
         'sort': 'stars',
-        "per_page": 20,
-        "page": _page,
+        "per_page": config.defaultPageSize,
+        "page": ++_page,
       },
     );
     SearchRepositories searchRepos = SearchRepositories.fromJson(result);
