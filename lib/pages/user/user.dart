@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github/pages/user/user_followers.dart';
 import 'package:github/pages/user/user_repositories.dart';
 
 class UserPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = TabController(
-      length: 2,
+      length: 3,
       vsync: this,
     );
   }
@@ -43,6 +44,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
               tabs: <Widget>[
                 Tab(text: 'Repositories'),
                 Tab(text: 'Followers'),
+                Tab(text: 'Following'),
               ],
             ),
           ),
@@ -51,7 +53,8 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
               controller: _controller,
               children: <Widget>[
                 UserRepositories(widget.name),
-                Tab(text: 'Followers'),
+                UserFollowers(name: widget.name, type: 'followers'),
+                UserFollowers(name: widget.name, type: 'following'),
               ],
             ),
           )
