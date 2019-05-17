@@ -33,6 +33,12 @@ class _HomeState extends State<Home> {
     );
   }
 
+  @override
+  dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Widget _buildNavigationBar() {
     return BottomNavigationBar(
       currentIndex: _currentIndex,

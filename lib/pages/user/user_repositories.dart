@@ -5,6 +5,7 @@ import 'package:github/models/user.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/widgets/pull_up_load_listview.dart';
 import 'package:github/widgets/repository_item.dart';
+import 'package:github/widgets/user_info.dart';
 import 'package:github/config/config.dart' as config;
 
 class UserRepositories extends StatefulWidget {
@@ -39,7 +40,7 @@ class _UserRepositoriesState extends State<UserRepositories> with AutomaticKeepA
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _buildUserInfo(_user),
+        UserInfo(_user),
         _buildUseRepositories()
       ],
     );
@@ -47,61 +48,6 @@ class _UserRepositoriesState extends State<UserRepositories> with AutomaticKeepA
 
   @override
   bool get wantKeepAlive => true;
-
-  Widget _buildUserInfo(User user) {
-    if (user == null) {
-      return Container();
-    }
-    return Card(
-      child: Container(
-        height: 70,
-        margin: EdgeInsets.only(top: 8),
-        padding: EdgeInsets.only(left: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(right: 8),
-              child: CircleAvatar(
-                child: Image.network(user.avatarUrl),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: 6),
-                  child: Text(
-                    '${user.name}(${user.login})',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 2),
-                      child: Icon(
-                        Icons.location_city,
-                        size: 14,
-                        color: Colors.black45
-                      ),
-                    ),
-                    Text(user.location),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildUseRepositories() {
     return Expanded(
@@ -135,7 +81,7 @@ class _UserRepositoriesState extends State<UserRepositories> with AutomaticKeepA
     setState(() => _loading = true);
     ApiService service = ApiService(routeName: 'users');
     var result = await service.get(
-      path: '${widget.name}}/repos',
+      path: '${widget.name}/repos',
       params: {
         'sort': 'pushed',
         'page': ++_page,

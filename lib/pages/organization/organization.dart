@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:github/pages/user/user_followers.dart';
-import 'package:github/pages/user/user_repositories.dart';
+import 'package:github/pages/organization/organization_members.dart';
+import 'package:github/pages/organization/organization_repositories.dart';
 
-class UserPage extends StatefulWidget {
+class Organization extends StatefulWidget {
 
   final String name;
 
-  UserPage(this.name);
+  Organization(this.name);
 
   @override
   State<StatefulWidget> createState() {
-    return _UserPageState();
+    return _OrganizationState();
   }
 }
 
-class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
+class _OrganizationState extends State<Organization> with TickerProviderStateMixin {
 
   TabController _controller;
 
@@ -22,7 +22,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = TabController(
-      length: 3,
+      length: 2,
       vsync: this,
     );
   }
@@ -43,8 +43,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
               indicatorColor: Colors.white,
               tabs: <Widget>[
                 Tab(text: 'Repositories'),
-                Tab(text: 'Followers'),
-                Tab(text: 'Following'),
+                Tab(text: 'Members'),
               ],
             ),
           ),
@@ -52,9 +51,8 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _controller,
               children: <Widget>[
-                UserRepositories(widget.name),
-                UserFollowers(name: widget.name, type: 'followers'),
-                UserFollowers(name: widget.name, type: 'following'),
+                OrganizationRepositories(widget.name),
+                OrganizationMembers(widget.name),
               ],
             ),
           )
@@ -65,8 +63,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
   }
-
 }

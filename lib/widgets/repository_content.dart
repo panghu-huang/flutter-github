@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:github/models/repository_content.dart';
+import 'package:github/pages/organization/organization.dart';
 import 'package:github/pages/user/user.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/widgets/loading.dart';
@@ -8,8 +9,9 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class RepositoryContentWidget extends StatefulWidget {
 
   final String fullName;
+  final bool isOrganization;
 
-  RepositoryContentWidget(this.fullName);
+  RepositoryContentWidget(this.fullName, this.isOrganization);
   @override
   State<StatefulWidget> createState() {
     return _RepositoryContentWidgetState();
@@ -159,9 +161,15 @@ class _RepositoryContentWidgetState extends State<RepositoryContentWidget> {
           onTap: () {
             switch (i) {
               case 0:
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (ctx) => UserPage(directory),
-                ));
+                if (widget.isOrganization) {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (ctx) => Organization(directory),
+                  ));
+                } else {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (ctx) => UserPage(directory),
+                  ));
+                }
                 break;
               case 1:
                 _path = null;

@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:github/widgets/pull_up_load_listview.dart';
-import 'package:github/widgets/repository_item.dart';
 import 'package:github/models/repository.dart';
 import 'package:github/models/search_repos.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/config/config.dart' as config;
+import 'package:github/widgets/repository_listview.dart';
 
 class Popular extends StatefulWidget {
 
@@ -30,12 +29,9 @@ class _PopularState extends State<Popular> with AutomaticKeepAliveClientMixin {
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    return PullUpLoadListView(
+    return RepositoryListView(
       loading: _loading,
-      itemCount: _repositories.length,
-      itemBuilder: (BuildContext ctx, int index) {
-        return RepositoryItem(_repositories[index]);
-      },
+      repositories: _repositories,
       loadMore: _fetchRepositories,
     );
   }

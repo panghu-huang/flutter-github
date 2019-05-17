@@ -8,9 +8,11 @@ class PullUpLoadListView extends StatefulWidget {
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
   final Function loadMore;
+  final EdgeInsetsGeometry padding;
 
   PullUpLoadListView({
     this.hasMore = true,
+    this.padding,
     this.itemBuilder,
     this.itemCount,
     this.loading,
@@ -37,6 +39,7 @@ class _PullUpLoadListViewState extends State<PullUpLoadListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: widget.padding,
       itemCount: widget.itemCount + 1,
       itemBuilder: (BuildContext ctx, int index) {
         if (index == widget.itemCount) {

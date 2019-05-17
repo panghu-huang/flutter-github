@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:github/models/repository.dart';
+import 'package:github/models/user.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/widgets/repository_content.dart';
 
@@ -20,6 +21,7 @@ class RepositoryCodePage extends StatefulWidget {
 class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticKeepAliveClientMixin {
 
   Repository _repository;
+  bool _isOrganization = false;
 
   @override
   void initState() {
@@ -44,7 +46,10 @@ class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticK
           child: _buildBasicInfo(),
         ),
         Expanded(
-          child: RepositoryContentWidget('${widget.user}/${widget.name}'),
+          child: RepositoryContentWidget(
+            '${widget.user}/${widget.name}',
+            _isOrganization,
+          ),
         ),
       ],
     );
@@ -122,6 +127,7 @@ class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticK
     if (mounted) {
       setState(() {
         _repository = repository;
+        _isOrganization = repository.owner.type == UserType.Organization;
       });
     }
   }
