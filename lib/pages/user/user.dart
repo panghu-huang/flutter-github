@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:github/pages/user/user_followers.dart';
-import 'package:github/pages/user/user_repositories.dart';
+import 'package:github/widgets/user_repositories.dart';
 
 class UserPage extends StatefulWidget {
 

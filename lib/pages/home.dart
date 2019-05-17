@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:github/pages/popular.dart';
+import 'package:github/pages/search.dart';
 import 'package:github/pages/waiting.dart';
 
 class Home extends StatefulWidget {
@@ -27,6 +28,7 @@ class _HomeState extends State<Home> {
         controller: _controller,
         children: [
           Popular(),
+          Search(),
           Waiting(),
         ],
       ),
@@ -46,6 +48,10 @@ class _HomeState extends State<Home> {
         BottomNavigationBarItem(
           icon: Icon(Icons.code),
           title: Text('Popular')
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          title: Text('Search')
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.panorama_wide_angle),
