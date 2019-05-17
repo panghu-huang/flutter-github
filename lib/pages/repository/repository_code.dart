@@ -38,6 +38,7 @@ class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticK
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return Column(
       children: [

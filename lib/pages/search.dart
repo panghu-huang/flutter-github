@@ -27,6 +27,7 @@ class _SearchState extends State<Search> with AutomaticKeepAliveClientMixin {
   String _keyword;
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[

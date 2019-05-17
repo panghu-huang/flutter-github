@@ -34,6 +34,7 @@ class _UserFollowersState extends State<UserFollowers> with AutomaticKeepAliveCl
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return UserListView(
       hasMore: _hasMore,
