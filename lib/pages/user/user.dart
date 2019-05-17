@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github/pages/user/user_followers.dart';
 import 'package:github/pages/user/user_repositories.dart';
 
 class UserPage extends StatefulWidget {
@@ -9,22 +10,19 @@ class UserPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _UserPageState(this.name);
+    return _UserPageState();
   }
 }
 
 class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
 
-  final String name;
   TabController _controller;
-
-  _UserPageState(this.name);
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(
-      length: 2,
+      length: 3,
       vsync: this,
     );
   }
@@ -34,7 +32,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(name),
+        title: Text(widget.name),
       ),
       body: Column(
         children: <Widget>[
@@ -46,6 +44,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
               tabs: <Widget>[
                 Tab(text: 'Repositories'),
                 Tab(text: 'Followers'),
+                Tab(text: 'Following'),
               ],
             ),
           ),
@@ -53,14 +52,21 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _controller,
               children: <Widget>[
-                UserRepositories(name),
-                Tab(text: 'Followers'),
+                UserRepositories(widget.name),
+                UserFollowers(name: widget.name, type: 'followers'),
+                UserFollowers(name: widget.name, type: 'following'),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
 }

@@ -5,6 +5,7 @@ import 'package:github/models/issue.dart';
 import 'package:github/models/issue_label.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/config/config.dart' as config;
+import 'package:github/widgets/pull_up_load_listview.dart';
 
 class RepositoryIssues extends StatefulWidget {
 
@@ -14,55 +15,35 @@ class RepositoryIssues extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _RepositoryIssuesState(this.fullName);
+    return _RepositoryIssuesState();
   }
 }
 
 class _RepositoryIssuesState extends State<RepositoryIssues> with AutomaticKeepAliveClientMixin {
 
-  final String fullName;
-  ScrollController _controller;
-  int _page = 1;
+  int _page = 0;
   bool _loading = false;
   bool _hasMore = true;
   List<Issue> _issues = [];
 
-  _RepositoryIssuesState(this.fullName);
-
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller.addListener(_handleListScroll);
     _fetchIssues();
   }
 
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    int length = _issues.length;
-    return ListView.builder(
-      controller: _controller,
-      itemCount: length + 1,
+    return PullUpLoadListView(
+      loading: _loading,
+      hasMore: _hasMore,
+      loadMore: _fetchIssues,
+      itemCount: _issues.length,
       itemBuilder: (ctx, index) {
-        if (index == length) {
-          if (_loading) {
-            return Container(
-              padding: EdgeInsets.all(8),
-              child: CupertinoActivityIndicator(),
-            );
-          }
-          return null;
-        }
         return _buildIssueItem(_issues[index]);
       },
     );
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 
   @override
@@ -131,9 +112,9 @@ class _RepositoryIssuesState extends State<RepositoryIssues> with AutomaticKeepA
     setState(() => _loading = true);
     ApiService service = ApiService(routeName: 'repos');
     List list = await service.get(
-      path: '$fullName/issues',
+      path: '${widget.fullName}/issues',
       params: {
-        'page': _page,
+        'page': ++_page,
         'per_page': config.defaultPageSize,
       },
     );
@@ -147,17 +128,6 @@ class _RepositoryIssuesState extends State<RepositoryIssues> with AutomaticKeepA
         _loading = false;
         _hasMore = issues.length >= config.defaultPageSize;
       });
-    }
-  }
-
-  void _handleListScroll() {
-    double max = _controller.position.maxScrollExtent;
-    double current = _controller.position.pixels;
-    if (max - current <= 20) {
-      if (!_loading && _hasMore) {
-        _page++;
-        _fetchIssues();
-      }
     }
   }
 

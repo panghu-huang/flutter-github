@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:github/pages/repository/repository_code.dart';
-import 'package:github/pages/repository/repository_issues.dart';
+import 'package:github/pages/organization/organization_members.dart';
+import 'package:github/pages/organization/organization_repositories.dart';
 
-class RepositoryPage extends StatefulWidget {
+class Organization extends StatefulWidget {
 
-  final String user;
   final String name;
 
-  RepositoryPage({ this.user, this.name });
+  Organization(this.name);
 
   @override
   State<StatefulWidget> createState() {
-    return _RepositoryPageState();
+    return _OrganizationState();
   }
-
 }
 
-class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+class _OrganizationState extends State<Organization> with TickerProviderStateMixin {
 
   TabController _controller;
 
@@ -30,12 +28,11 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
   }
 
   @override
-  // ignore: must_call_super
-  Widget build(BuildContext ctx) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.user}/${widget.name}'),
         elevation: 0,
+        title: Text(widget.name),
       ),
       body: Column(
         children: <Widget>[
@@ -45,8 +42,8 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
               controller: _controller,
               indicatorColor: Colors.white,
               tabs: <Widget>[
-                Tab(text: 'Code'),
-                Tab(text: 'Issues'),
+                Tab(text: 'Repositories'),
+                Tab(text: 'Members'),
               ],
             ),
           ),
@@ -54,20 +51,19 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
             child: TabBarView(
               controller: _controller,
               children: <Widget>[
-                RepositoryCodePage(
-                  user: widget.user,
-                  name: widget.name,
-                ),
-                RepositoryIssues('${widget.user}/${widget.name}')
+                OrganizationRepositories(widget.name),
+                OrganizationMembers(widget.name),
               ],
             ),
           )
         ],
-      )
+      ),
     );
   }
 
   @override
-  bool get wantKeepAlive => true;
-
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 }

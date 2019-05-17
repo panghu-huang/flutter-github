@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:github/models/repository.dart';
+import 'package:github/models/user.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/widgets/repository_content.dart';
 
@@ -13,28 +14,22 @@ class RepositoryCodePage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _RepositoryCodePageState(
-      name: name,
-      user: user
-    );
+    return _RepositoryCodePageState();
   }
 }
 
 class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticKeepAliveClientMixin {
 
-  final String user;
-  final String name;
   Repository _repository;
-
-  _RepositoryCodePageState({ this.name, this.user });
+  bool _isOrganization = false;
 
   @override
   void initState() {
     super.initState();
     _repository = Repository(
       id: null,
-      name: name,
-      fullName: '$user/$name',
+      name: widget.name,
+      fullName: '${widget.user}/${widget.name}',
       watchersCount: 0,
       stargazersCount: 0,
       openIssuesCount: 0,
@@ -51,7 +46,10 @@ class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticK
           child: _buildBasicInfo(),
         ),
         Expanded(
-          child: RepositoryContentWidget('$user/$name'),
+          child: RepositoryContentWidget(
+            '${widget.user}/${widget.name}',
+            _isOrganization,
+          ),
         ),
       ],
     );
@@ -121,15 +119,15 @@ class _RepositoryCodePageState extends State<RepositoryCodePage> with AutomaticK
   }
 
   void _fetchRepository() async {
-    print('$user/$name');
     ApiService service = ApiService(routeName: 'repos');
     Map<String, dynamic> result = await service.get(
-      path: '$user/$name',
+      path: '${widget.user}/${widget.name}',
     );
     Repository repository = Repository.fromJson(result);
     if (mounted) {
       setState(() {
         _repository = repository;
+        _isOrganization = repository.owner.type == UserType.Organization;
       });
     }
   }
