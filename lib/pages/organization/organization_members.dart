@@ -30,6 +30,7 @@ class _OrganizationMembersState extends State<OrganizationMembers> with Automati
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return UserListView(
       loading: _loading,

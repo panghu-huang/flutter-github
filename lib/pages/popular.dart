@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:github/models/repository.dart';
-import 'package:github/models/search_repos.dart';
+import 'package:github/models/search_result.dart';
 import 'package:github/services/api_service.dart';
 import 'package:github/config/config.dart' as config;
 import 'package:github/widgets/repository_listview.dart';
@@ -50,11 +50,11 @@ class _PopularState extends State<Popular> with AutomaticKeepAliveClientMixin {
         "page": ++_page,
       },
     );
-    SearchRepositories searchRepos = SearchRepositories.fromJson(result);
+    SearchResult<Repository> searchRepos = SearchResult.fromJson(result, (v) => Repository.fromJson(v));
     if (mounted) {
       setState(() {
         _loading = false;
-        _repositories.addAll(searchRepos.repositories);
+        _repositories.addAll(searchRepos.list);
       });
     }
   }

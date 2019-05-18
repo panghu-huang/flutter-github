@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:github/models/user.dart';
+import 'package:github/pages/user/user.dart';
 import './pull_up_load_listview.dart';
 
-class UserListView extends StatelessWidget {
-
+class UserListView extends StatefulWidget {
   final List<User> users;
   final bool loading;
   final bool hasMore;
@@ -19,17 +19,26 @@ class UserListView extends StatelessWidget {
   });
 
   @override
+  State<StatefulWidget> createState() {
+    return _UserListViewState();
+  }
+
+}
+
+class _UserListViewState extends State<UserListView> {
+
+  @override
   Widget build(BuildContext ctx) {
-    int length = users.length;
+    int length = widget.users.length;
     return PullUpLoadListView(
-      loadMore: loadMore,
-      loading: loading,
-      hasMore: hasMore,
+      loadMore: widget.loadMore,
+      loading: widget.loading,
+      hasMore: widget.hasMore,
       itemCount: length,
-      padding: padding,
+      padding: widget.padding,
       itemBuilder: (ctx, index) {
         return _buildItem(
-          users[index], index == length - 1,
+          widget.users[index], index == length - 1,
         );
       },
     );
@@ -65,6 +74,11 @@ class UserListView extends StatelessWidget {
           ],
         ),
       ),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (ctx) => UserPage(user.login),
+        ));
+      },
     );
   }
 

@@ -30,6 +30,7 @@ class _OrganizationRepositoriesState extends State<OrganizationRepositories> wit
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return RepositoryListView(
       loading: _loading,
