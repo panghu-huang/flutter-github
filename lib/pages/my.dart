@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github/widgets/user_repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:github/config/config.dart' as config;
 
@@ -22,11 +23,24 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
   }
 
   @override
+  void didUpdateWidget(My oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _login = '2';
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print('deactivate');
+  }
+
+  @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     if (_login == null) {
       return _buildUnLogin();
     }
-    return null;
+    return UserRepositories(_login);
   }
 
   @override
@@ -121,9 +135,9 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
     String login = _controller.text;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(config.savedLoginKey, login);
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text('Success'),
-    ));
+    setState(() {
+      _login = login;
+    });
   }
 
 }

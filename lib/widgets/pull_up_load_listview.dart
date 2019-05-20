@@ -38,6 +38,9 @@ class _PullUpLoadListViewState extends State<PullUpLoadListView> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.loading && widget.itemCount == 0) {
+      return _buildEmpty();
+    }
     return ListView.builder(
       padding: widget.padding,
       itemCount: widget.itemCount + 1,
@@ -61,6 +64,28 @@ class _PullUpLoadListViewState extends State<PullUpLoadListView> {
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  Widget _buildEmpty() {
+    return Column(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.fromLTRB(0, 100, 0, 10),
+          child: Icon(
+            Icons.business,
+            size: 80,
+            color: Colors.black38,
+          ),
+        ),
+        Text(
+          '暂无数据',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black54,
+          ),
+        )
+      ],
+    );
   }
 
   void _handleListViewScroll() {
