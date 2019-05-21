@@ -10,13 +10,12 @@ class StoreProvider extends InheritedWidget {
 
   final Store store;
 
-  StoreProvider({ Widget child }):
-      store = Store(),
-      super(child: child);
+  StoreProvider({ Key key, Widget child, @required this.store }):
+      super(key: key, child: child);
 
   @override
   bool updateShouldNotify(StoreProvider oldWidget) {
-    return store != oldWidget.store;
+    return true;
   }
 
 }

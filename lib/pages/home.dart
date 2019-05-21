@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:github/pages/popular.dart';
 import 'package:github/pages/search.dart';
 import 'package:github/pages/my.dart';
+import 'package:github/pages/setting.dart';
 
 class Home extends StatefulWidget {
 
@@ -18,10 +19,24 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.page.round() != _currentIndex) {
+        setState(() {
+          _currentIndex = _controller.page.round();
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Github'),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       bottomNavigationBar: _buildNavigationBar(),
       body: PageView(
@@ -30,6 +45,7 @@ class _HomeState extends State<Home> {
           Popular(),
           Search(),
           My(),
+          Setting(),
         ],
       ),
     );
@@ -43,6 +59,8 @@ class _HomeState extends State<Home> {
 
   Widget _buildNavigationBar() {
     return BottomNavigationBar(
+      selectedItemColor: Colors.blueAccent,
+      unselectedItemColor: Colors.blue,
       currentIndex: _currentIndex,
       items: [
         BottomNavigationBarItem(
@@ -56,6 +74,10 @@ class _HomeState extends State<Home> {
         BottomNavigationBarItem(
           icon: Icon(Icons.insert_emoticon),
           title: Text('My'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          title: Text('Settings'),
         )
       ],
       onTap: (int index) {
