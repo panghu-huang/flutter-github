@@ -39,7 +39,7 @@ class ApiService {
   }
 
   String _getBaseUrl() {
-    return _baseUrl != null ? _baseUrl : ApiService.baseUrl;
+    return _baseUrl ?? ApiService.baseUrl;
   }
 
   String _composePath(String path) {

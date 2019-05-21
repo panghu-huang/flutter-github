@@ -32,6 +32,7 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
   @override
   // ignore: must_call_super
   Widget build(BuildContext ctx) {
+    ThemeData themeData = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.user}/${widget.name}'),
@@ -40,7 +41,7 @@ class _RepositoryPageState extends State<RepositoryPage> with AutomaticKeepAlive
       body: Column(
         children: <Widget>[
           Container(
-            color: Colors.blue,
+            color: themeData.primaryColor,
             child: TabBar(
               controller: _controller,
               indicatorColor: Colors.white,
