@@ -29,6 +29,7 @@ class _OrganizationState extends State<Organization> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    ThemeData themeData = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -37,7 +38,7 @@ class _OrganizationState extends State<Organization> with TickerProviderStateMix
       body: Column(
         children: <Widget>[
           Container(
-            color: Colors.blue,
+            color: themeData.primaryColor,
             child: TabBar(
               controller: _controller,
               indicatorColor: Colors.white,

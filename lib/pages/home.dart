@@ -33,8 +33,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Github'),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       bottomNavigationBar: _buildNavigationBar(),
       body: PageView(

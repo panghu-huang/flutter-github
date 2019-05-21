@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:github/store/provider.dart';
+import 'package:github/store/store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:github/config/config.dart' as config;
 
@@ -39,7 +41,8 @@ class _SettingState extends State<Setting> {
           children: [
             _buildThemeColorItem('Blue', Colors.blue),
             _buildThemeColorItem('Red', Colors.red),
-            _buildThemeColorItem('Amber', Colors.amber)
+            _buildThemeColorItem('Amber', Colors.amber),
+            _buildThemeColorItem('Indigo', Colors.indigo),
           ],
         );
       }
@@ -62,12 +65,21 @@ class _SettingState extends State<Setting> {
           ],
         ),
       ),
+      onTap: () {
+        setState(() {
+          Store store = StoreProvider.of(context).store;
+          store.themeData = ThemeData(
+            primaryColor: Colors.blue,
+          );
+        });
+      },
     );
   }
 
   void _removeLoginName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(config.savedLoginKey);
+    StoreProvider.of(context).store.loginName = null;
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text('清除登录信息成功'),
     ));

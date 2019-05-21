@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:github/store/comsumer.dart';
+import 'package:github/store/provider.dart';
+import 'package:github/store/store.dart';
 import 'package:github/widgets/user_repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:github/config/config.dart' as config;
@@ -13,7 +16,6 @@ class My extends StatefulWidget {
 
 class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
 
-  String _login;
   TextEditingController _controller = TextEditingController();
 
   @override
@@ -23,24 +25,16 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
   }
 
   @override
-  void didUpdateWidget(My oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _login = '2';
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-    print('deactivate');
-  }
-
-  @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    if (_login == null) {
-      return _buildUnLogin();
-    }
-    return UserRepositories(_login);
+    return StoreConsumer(
+      builder: (BuildContext ctx, Store store) {
+        if (store.loginName == null) {
+          return _buildUnLogin();
+        }
+        return UserRepositories(store.loginName);
+      },
+    );
   }
 
   @override
@@ -126,8 +120,9 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
 
   void _getLoginName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    Store store = StoreProvider.of(context).store;
     setState(() {
-      _login = prefs.getString(config.savedLoginKey);
+      store.loginName = prefs.getString(config.savedLoginKey);
     });
   }
 
@@ -135,8 +130,9 @@ class _MyState extends State<My> with AutomaticKeepAliveClientMixin {
     String login = _controller.text;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(config.savedLoginKey, login);
+    Store store = StoreProvider.of(context).store;
     setState(() {
-      _login = login;
+      store.loginName = login;
     });
   }
 
